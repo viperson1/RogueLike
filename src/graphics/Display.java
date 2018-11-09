@@ -21,7 +21,7 @@ public class Display {
 	}
 	
 	public static void main(String[] args) throws IOException {
-		Level level = new Level(27, 25, true, "test", "cellAuto");
+		Level level = new Level(65, 54, true, "test", "cellAuto");
 		Display test = new Display(level);
 		test.drawMap(level);
 	}
