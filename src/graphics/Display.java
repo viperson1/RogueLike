@@ -15,13 +15,13 @@ public class Display {
 	private Screen screen;
 	
 	Display(Level level) throws IOException {
-		final Font font = FontLoader.loadFontFromJar("Fonts/DejaVu Sans Mono/12pt/bitmap.png", "Fonts/DejaVu Sans Mono/12pt/data.fnt", 1);
+		final Font font = FontLoader.loadFontFromJar("Fonts/DejaVu Sans Mono/12pt/bitmap.png", "Fonts/DejaVu Sans Mono/12pt/data.fnt", 0.5);
 		screen = new Screen(level.getMapWidth() * 3, level.getMapHeight(), font);
 		screen.addCanvasToFrame();
 	}
 	
 	public static void main(String[] args) throws IOException {
-		Level level = new Level(65, 54, true, "test", "cellAuto");
+		Level level = new Level(130, 104, true, "test", "cellAuto");
 		Display test = new Display(level);
 		test.drawMap(level);
 	}
