@@ -32,10 +32,10 @@ public class Generator {
 			tools.smoothMap();
 		}
 		
-		findRegions();
+		findRegions((level.getMapHeight() / 15) * (level.getMapWidth() / 15));
 		int regionCount = level.getRegions().size();
-		for(int regionA = 1; regionA < regionCount; regionA++) {
-			for(int regionB = 1; regionB < regionCount; regionB++) {
+		for(int regionA = 0; regionA < regionCount; regionA++) {
+			for(int regionB = 0; regionB < regionCount; regionB++) {
 				if(regionA != regionB) {
 					connectRegions(level.getRegion(regionA), level.getRegion(regionB));
 				}
@@ -44,7 +44,7 @@ public class Generator {
 	}
 	
 
-	public void findRegions() {
+	public void findRegions(int minRegionSize) {
 		int region = 1;
 		for(int x = 0; x < level.getMapWidth(); x++) {
 			for(int y = 0; y < level.getMapHeight(); y++) {
@@ -52,10 +52,10 @@ public class Generator {
 					Region newRegion = new Region(region);
 					level.addRegion(newRegion);
 					tools.fill(newRegion, x, y);
-					if(newRegion.getRegionSize() < 30) {
+					if(newRegion.getRegionSize() < minRegionSize) {
 						for(Cell cell : newRegion.getCells()) {
 							cell.setOpen(false);
-							//cell.setRegion(0);
+							cell.setRegion(0);
 							level.getRegions().remove(newRegion);
 						}
 					}
@@ -81,15 +81,10 @@ public class Generator {
 			}
 		}
 		if(closestCellA != null && closestCellB != null && minDistance < Math.hypot(level.getMapWidth(), level.getMapHeight()) / 4) {
-			boolean obstructed = false;
+			
 			List<Point> tunnel = ShapeAlgorithms.getLine(closestCellA.getPosX(), closestCellA.getPosY(), closestCellB.getPosX(), closestCellB.getPosY());
-			for(Point position : tunnel) {
-				if((position != tunnel.get(0) && position != tunnel.get(tunnel.size() - 1) || tunnel.size() < 4)) {
-					if(level.getCell(position.x, position.y).isOpenSpace()) {
-						obstructed = true;
-					}
-				}
-			}
+			boolean obstructed = checkObstructions(tunnel, closestCellA.getRegion(), closestCellB.getRegion());
+			
 			if(!obstructed) {
 				for(Point position : tunnel) {
 					for(int x = position.x - 1; x < position.x + 1; x++) {
@@ -100,5 +95,19 @@ public class Generator {
 				}
 			}
 		}
+	}
+	
+	boolean checkObstructions (List<Point> tunnel, int regionA, int regionB) {
+		boolean obstructed = false;
+		for(Point position : tunnel) {
+			int currentCellRegion = level.getCell(position.x, position.y).getRegion();
+			boolean CurrentCellOpen = level.getCell(position.x, position.y).isOpenSpace();
+			
+			
+			if(CurrentCellOpen && currentCellRegion != regionB && currentCellRegion != regionB) {
+				obstructed = true;
+			}
+		}
+		return obstructed;
 	}
 }

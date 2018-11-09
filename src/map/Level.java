@@ -43,7 +43,7 @@ public class Level {
 	}
 	
 	public Region getRegion(int index) {
-		if(index < regions.size() && index > 0) {
+		if(index < regions.size() && index >= 0) {
 			return regions.get(index);
 		}
 		return null;
