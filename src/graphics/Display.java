@@ -15,24 +15,32 @@ public class Display {
 	private Screen screen;
 	
 	Display(Level level) throws IOException {
-		final Font font = FontLoader.loadFontFromJar("Fonts/DejaVu Sans Mono/12pt/bitmap.png", "Fonts/DejaVu Sans Mono/12pt/data.fnt", .75);
+		final Font font = FontLoader.loadFontFromJar("fonts/Unifont/unifont_0.png", "fonts/Unifont/unifont.fnt", 1);
 		screen = new Screen(level.getMapWidth() * 3, level.getMapHeight(), font);
 		screen.addCanvasToFrame();
 	}
 	
 	public static void main(String[] args) throws IOException {
-		Level level = new Level(90, 73, true, "test", "cellAuto");
+		Level level = new Level(54, 40, true, "test", "cellAuto");
 		Display test = new Display(level);
 		test.drawMap(level);
 	}
 	
 	public void drawMap(Level level) {
+		int variationDensity = 15;
 		for(int x = 0; x < level.getMapWidth(); x++) {
 			for(int y = 0; y < level.getMapHeight(); y++) {
 				Cell cell = level.getCell(x, y);
 				for(int i = 0; i < 3; i++) {
 					Tile tile = screen.getTileAt((x * 3) + i, y);
-					tile.setCharacter(Tilesets.unicodeTiles[7][cell.getConfiguration()].charAt(i));
+					tile.setBackgroundColor(Color.BLACK);
+					tile.setCharacter(Math.floor(Math.random() * 99.99) < variationDensity ?
+							Tilesets.variationTiles[7][cell.getConfiguration()].charAt(i) :
+							Tilesets.unicodeTiles[7][cell.getConfiguration()].charAt(i));
+					/*if(Tilesets.unicodeTiles[7][cell.getConfiguration()].charAt(i) == '@') {
+						//tile.setForegroundColor(new Color(5, 5, 5));
+					}
+					
 					if(cell.getRegion() != 0) {
 						/*switch(cell.getRegion() % 7) {
 						case 0:
@@ -55,11 +63,11 @@ public class Display {
 						case 6:
 							tile.setBackgroundColor(Color.PINK);
 							break;
-						}*/
+						}
 						if(i == 1) {
 							tile.setCharacter((char)(cell.getRegion() + 64));
 						}
-					}
+					}*/
 				}
 			}
 		}

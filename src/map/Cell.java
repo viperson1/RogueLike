@@ -27,6 +27,7 @@ public class Cell {
 	
 	public void setOpen(boolean isOpen) {
 		this.isOpenSpace = isOpen;
+		
 		level.configureCell(cellX, cellY);
 		level.configureCell(cellX, cellY - 1);
 		level.configureCell(cellX, cellY + 1);

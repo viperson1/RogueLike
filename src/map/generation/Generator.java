@@ -32,6 +32,15 @@ public class Generator {
 			tools.smoothMap();
 		}
 		
+		for(int i = 0; i < level.getMapWidth() / 10; i++) {
+			int x = pseudoRandom.nextInt(level.getMapWidth());
+			int y = pseudoRandom.nextInt(level.getMapHeight());
+			if(level.getCell(x, y).isOpenSpace()) {
+				level.getCell(x, y).getLight().setColor(255, 255, 255);
+				level.getCell(x, y).getLight().setSource(true);			
+			}
+		}
+		
 		findRegions((level.getMapHeight() / 15) * (level.getMapWidth() / 15));
 		int regionCount = level.getRegions().size();
 		for(int regionA = 0; regionA < regionCount; regionA++) {
@@ -102,10 +111,12 @@ public class Generator {
 		for(Point position : tunnel) {
 			int currentCellRegion = level.getCell(position.x, position.y).getRegion();
 			boolean CurrentCellOpen = level.getCell(position.x, position.y).isOpenSpace();
-			
-			
-			if(CurrentCellOpen && currentCellRegion != regionB && currentCellRegion != regionB) {
-				obstructed = true;
+			for(int x = position.x - 1; x < position.x + 1; x++) {
+				for(int y = position.y - 1; y < position.y + 1; y++) {
+					if(CurrentCellOpen && currentCellRegion != regionA && currentCellRegion != regionB) {
+						obstructed = true;
+					}
+				}
 			}
 		}
 		return obstructed;

@@ -101,8 +101,8 @@ public class Toolset {
 	}
 
 	public void smoothMap() {
-		for(int y = 1; y < level.getMapHeight() - 1; y++) {
-			for(int x = 1; x < level.getMapWidth() - 1; x++) {
+		for(int y = 0; y < level.getMapHeight(); y++) {
+			for(int x = 0; x < level.getMapWidth(); x++) {
 				int wallCount = level.getSurroundingCells(x, y);
 				
 				if(wallCount < 4) {

@@ -15,6 +15,7 @@ public class Level {
 			}
 		}
 		this.regions = new ArrayList<Region>();
+		this.lights = new ArrayList<Light>();
 		this.gen = new Generator(this, (randomSeed) ? "" + Math.random() : seed);
 		switch(genType) {
 			case "cellAuto":
@@ -26,6 +27,7 @@ public class Level {
 	
 	private int mapWidth;
 	private int mapHeight;
+	private ArrayList<Light> lights;
 	private Cell[][] cells;
 	private Generator gen;
 	private ArrayList<Region> regions;
@@ -47,6 +49,10 @@ public class Level {
 			return regions.get(index);
 		}
 		return null;
+	}
+	
+	public ArrayList<Light> getLights() {
+		return this.lights;
 	}
 	
 	public ArrayList<Region> getRegions() {
@@ -98,6 +104,7 @@ public class Level {
 					cells[x][y].setConfiguration(cells[x][y].getConfiguration() + 8);
 				}
 			}
+			else if((y + 1 < mapHeight) ? cells[x][y + 1].isOpenSpace() : false);
 			else cells[x][y].setConfiguration(0);
 		}
 	}
